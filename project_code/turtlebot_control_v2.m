@@ -10,7 +10,10 @@ states = 1;  % initial state
 % states = 3;  % line following state
 % states = 4;  % Finsih task, stop
 robot_pub = rospublisher('/cmd_vel','geometry_msgs/Twist');
-[imu_sub, cam_sub, laser_sub] = initial_sub();
+laser_sub = rossubscriber('/scan');
+imu_sub = rossubscriber('/imu');
+cam_sub = rossubscriber('/telemetry');
+% [imu_sub, cam_sub, laser_sub] = initial_sub();
 %% Control loop
 while(1)
 
@@ -18,7 +21,7 @@ while(1)
        [robot_Rotation] = get_imu_data(imu_sub);
        current_yaw = robot_Rotation(1);
 %        current_location = turtelbot3.Pose.Pose.Position;
-       [x_lidar, y_lidar] = get_lidar_data();
+       [x_lidar, y_lidar] = get_lidar_data(laser_sub);
        [velocity_msg, minDist] = aviod_object(x_lidar, y_lidar, robot_pub);
        if minDist < 0.5
             send_msgs(velocity_msg, robot_pub); 
@@ -31,42 +34,51 @@ while(1)
     elseif states == 2
        %%% Searching for white line and yellow point   
         [velocity_msg] = generate_msgs(0, 0.1, robot_pub);
-        tic;
-        while toc < 10.47
-            send_msgs(velocity_msg, robot_pub);
-            disp("Turning 60 degrees......");
-        end
-        stop_mission(robot_pub);
-        [robot_Rotation] = get_imu_data(imu_sub);
-        [distance_polar, angle_polar, distance_line, angle_line]= get_cam_data(cam_sub);
-        
-        if angle_polar == -1
-            states = 2;
-            disp("not find yellow polar!!");
+        send_msgs(velocity_msg, robot_pub);
+        [minDist] = detect_object_lidar(laser_sub);
+        if minDist < 0.5
+%             around_object2(minDist, robot_pub);
+            states = 1;
             return
         else
-            record_yellow_angle = robot_Rotation(1) + angle_polar;
-            if distance_line == -1
+            tic;
+            while toc < 10.47
+%                 around_object()
+    %             send_msgs(velocity_msg, robot_pub);
+                disp("Turning 60 degrees......");
+            end
+            stop_mission(robot_pub);
+            [robot_Rotation] = get_imu_data(imu_sub);
+            [distance_polar, angle_polar, distance_line, angle_line]= get_cam_data(cam_sub);
+
+            if angle_polar == -1
                 states = 2;
-                disp("not find line!!");
+                disp("not find yellow polar!!");
                 return
             else
-                %%% Turn the heading face to the white line
-                angle_time = abs(angle_line)/0.1;
-                if angle_line > 0
-                    [velocity_msg] = generate_msgs(0, 0.1, robot_pub);
-                else 
-                    [velocity_msg] = generate_msgs(0, -0.1, robot_pub);
+                record_yellow_angle = robot_Rotation(1) + angle_polar;
+                if distance_line == -1
+                    states = 2;
+                    disp("not find line!!");
+                    return
+                else
+                    %%% Turn the heading face to the white line
+                    angle_time = abs(angle_line)/0.1;
+                    if angle_line > 0
+                        [velocity_msg] = generate_msgs(0, 0.1, robot_pub);
+                    else 
+                        [velocity_msg] = generate_msgs(0, -0.1, robot_pub);
+                    end
+                    tic;
+                    while toc < angle_line
+                        send_msgs(velocity_msg, robot_pub);
+                        disp("Turning to face the line......");
+                    end
+                    stop_mission(robot_pub);
+                    disp("Face to the line!!");
+                    states = 3;
+                    break;
                 end
-                tic;
-                while toc < angle_line
-                    send_msgs(velocity_msg, robot_pub);
-                    disp("Turning to face the line......");
-                end
-                stop_mission(robot_pub);
-                disp("Face to the line!!");
-                states = 3;
-                break;
             end
         end
        

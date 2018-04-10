@@ -10,6 +10,6 @@ function stop_mission(robot_pub)
     velocity_msg.Angular.X = 0;
     velocity_msg.Angular.Y = 0;
     velocity_msg.Angular.Z = 0;
-    send_msgs(velocity_msg);
+    send_msgs(velocity_msg, robot_pub);
     
 end

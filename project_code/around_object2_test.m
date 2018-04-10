@@ -1,4 +1,17 @@
-function around_object2(minDist, robot_pub) 
+% function around_object2()
+clear all; clc;
+laser_sub = rossubscriber('/scan');
+robot_pub = rospublisher('/cmd_vel','geometry_msgs/Twist');
+
+while(1)
+    [x_lidar, y_lidar, scan_data] = get_lidar_data(laser_sub);
+    dist1 = scan_data.Ranges(1:20);
+    dist2 = scan_data.Ranges(340:360);
+    dist1(dist1 == 0)=[];
+    dist2(dist2 == 0)=[]; 
+    minDist1 = min(dist1); 
+    minDist2 = min(dist2);
+    minDist = min(minDist1, minDist2);
     if minDist < 0.5
         disp("Avoid.......")
         if minDist1 < minDist2
@@ -76,9 +89,8 @@ function around_object2(minDist, robot_pub)
 %             pause(5);
         end
     else
-%        [velocity_msg]= generate_msgs(0.1, 0, robot_pub);
-%        send_msgs(velocity_msg, robot_pub); 
-       stop_mission(robot_pub);
-       disp("Stop")
+       [velocity_msg]= generate_msgs(0.1, 0, robot_pub);
+       send_msgs(velocity_msg, robot_pub); 
+       disp("Go forword!!!")
     end
 end
