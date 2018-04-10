@@ -1,6 +1,6 @@
 function around_object2()
 
-[x_lidar, y_lidar, scan_data] = get_lidar_data();
+[x_lidar, y_lidar, scan_data] = get_lidar_data(laser_sub);
 dist1 = scan_data.Ranges(1:20);
 dist2 = scan_data.Ranges(340:360);
 dist1(dist1 == 0)=[];
