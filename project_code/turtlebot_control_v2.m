@@ -38,6 +38,7 @@ while(1)
         [minDist] = detect_object_lidar(laser_sub);
         if minDist < 0.5
 %             around_object2(minDist, robot_pub);
+`           disp("something in the forward!!")
             states = 1;
             return
         else
