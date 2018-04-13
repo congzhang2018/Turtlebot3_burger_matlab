@@ -218,62 +218,62 @@ end
 
 
 % % Plot
-
-if ~IsPlotting
-    return
-end
-
-figure
-subplot(221); imshow(HighImg);
-subplot(222); imshow(HighImgYellow);
-if IsYPDetected
-    subplot(223); imshow(HighBWBiggestObj);
-    subplot(224); imshow(HighBWCanny); 
-    hold on; plot( YPPoint(2), YPPoint(1),'*'); hold off;
-end
-
-
-
-figure
-subplot(221);imshow(LowImg); 
-subplot(222);imshow(LowBW); 
-
-
-if IsWLDetected
-    
-    subplot(223);imshow(LowBWOpen); 
-    subplot(224);imshow(LowBWCanny); 
-    hold on
-
-    % Plot lines on bw image
-    max_len = 0; % record max length
-    for k = 1:length(lines)
-       xy = [lines(k).point1; lines(k).point2];
-       plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
-
-       % Plot beginnings and ends of lines
-       plot(xy(1,1),xy(1,2),'x','LineWidth',2,'Color','yellow');
-       plot(xy(2,1),xy(2,2),'x','LineWidth',2,'Color','red');
-
-       % Determine the endpoints of the longest line segment
-       len = norm(lines(k).point1 - lines(k).point2);
-       if ( len > max_len)
-          max_len = len;
-          xy_long = xy;
-       end
-    end
-
-    if WLMid > 0
-        plot(WLMid, Midlevel, '*', WLLeft, Midlevel, '*', WLRight, Midlevel, '*' );
-    end
-
-    hold off
-    
-end
-
-%     info = [YPDist, YPAng , WLDist, WLAng];
-%     disp(info);
-
-end
-
-
+% 
+% if ~IsPlotting
+%     return
+% end
+% 
+% figure
+% subplot(221); imshow(HighImg);
+% subplot(222); imshow(HighImgYellow);
+% if IsYPDetected
+%     subplot(223); imshow(HighBWBiggestObj);
+%     subplot(224); imshow(HighBWCanny); 
+%     hold on; plot( YPPoint(2), YPPoint(1),'*'); hold off;
+% end
+% 
+% 
+% 
+% figure
+% subplot(221);imshow(LowImg); 
+% subplot(222);imshow(LowBW); 
+% 
+% 
+% if IsWLDetected
+%     
+%     subplot(223);imshow(LowBWOpen); 
+%     subplot(224);imshow(LowBWCanny); 
+%     hold on
+% 
+%     % Plot lines on bw image
+%     max_len = 0; % record max length
+%     for k = 1:length(lines)
+%        xy = [lines(k).point1; lines(k).point2];
+%        plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
+% 
+%        % Plot beginnings and ends of lines
+%        plot(xy(1,1),xy(1,2),'x','LineWidth',2,'Color','yellow');
+%        plot(xy(2,1),xy(2,2),'x','LineWidth',2,'Color','red');
+% 
+%        % Determine the endpoints of the longest line segment
+%        len = norm(lines(k).point1 - lines(k).point2);
+%        if ( len > max_len)
+%           max_len = len;
+%           xy_long = xy;
+%        end
+%     end
+% 
+%     if WLMid > 0
+%         plot(WLMid, Midlevel, '*', WLLeft, Midlevel, '*', WLRight, Midlevel, '*' );
+%     end
+% 
+%     hold off
+%     
+% end
+% 
+% %     info = [YPDist, YPAng , WLDist, WLAng];
+% %     disp(info);
+% 
+% end
+% 
+% 

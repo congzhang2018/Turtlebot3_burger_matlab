@@ -12,9 +12,9 @@ states = 1;  % initial state
 robot_pub = rospublisher('/cmd_vel','geometry_msgs/Twist');
 laser_sub = rossubscriber('/scan');
 imu_sub = rossubscriber('/imu');
-% cam_sub = rossubscriber('/telemetry');
-pi_cam_node = '/raspicam_node/image/compressed';
-image_sub = rossubscriber(pi_cam_node);
+cam_sub = rossubscriber('/telemetry');
+% pi_cam_node = '/raspicam_node/image/compressed';
+% image_sub = rossubscriber(pi_cam_node);
 % [imu_sub, cam_sub, laser_sub] = initial_sub();
 %% Control loop
 while(1)
@@ -47,12 +47,7 @@ while(1)
         stop_mission(robot_pub);
         [robot_Rotation] = get_imu_data(imu_sub);
         disp("Get imu data");
-%         [distance_polar, angle_polar, distance_line, angle_line]= get_cam_data(cam_sub);
-        image_compressed = receive(image_sub);
-        image_compressed.Format = 'bgr8; jpeg compressed bgr8';
-        image = readImage(image_compressed);
-        % imshow(image)
-        [distance_polar, angle_polar, distance_line, angle_line] = detect_straight_lines(image);
+        [distance_polar, angle_polar, distance_line, angle_line]= get_cam_data(cam_sub);
         disp("Get cam data");
         
         if angle_polar == -1
@@ -85,13 +80,7 @@ while(1)
     elseif states == 3
             disp("In state 3!!!!");
             [robot_Rotation] = get_imu_data(imu_sub);
-%             [distance_polar, angle_polar, distance_line, angle_line]= get_cam_data(cam_sub);
-            image_compressed = receive(image_sub);
-            image_compressed.Format = 'bgr8; jpeg compressed bgr8';
-            image = readImage(image_compressed);
-            % imshow(image)
-            [distance_polar, angle_polar, distance_line, angle_line] = detect_straight_lines(image);
-
+            [distance_polar, angle_polar, distance_line, angle_line]= get_cam_data(cam_sub);
             disp("Get cam data");
             if distance_line == -1
                 states = 2;
@@ -127,12 +116,7 @@ while(1)
        
     elseif states == 4
         disp("In state 4!!!!");
-%         [distance_polar, angle_polar, distance_line, angle_line]= get_cam_data(cam_sub);
-        image_compressed = receive(image_sub);
-        image_compressed.Format = 'bgr8; jpeg compressed bgr8';
-        image = readImage(image_compressed);
-        % imshow(image)
-        [distance_polar, angle_polar, distance_line, angle_line] = detect_straight_lines(image);
+        [distance_polar, angle_polar, distance_line, angle_line]= get_cam_data(cam_sub);
         disp("Get cam data");
         if distance_line == -1
             if distance_polar == -1
