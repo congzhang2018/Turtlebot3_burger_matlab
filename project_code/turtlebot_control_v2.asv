@@ -161,17 +161,17 @@ while(1)
                 diso("Moving to the yellow polar ... ");
             end
             stop_mission(robot_pub);
-%             cost_angle_time = angle_line/0.1;
-%             if desired_yaw > 0
-%                 [velocity_msg] = generate_msgs(0, 0.1, robot_pub);
-%             else 
-%                 [velocity_msg] = generate_msgs(0, -0.1, robot_pub);
-%             end
-%             tic;
-%             while toc < angle_time
-%                 send_msgs(velocity_msg, robot_pub);
-%                 disp("Turning to face the polar......");
-%             end
+            cost_angle_time = angle_line/0.1;
+            if desired_yaw > 0
+                [velocity_msg] = generate_msgs(0, 0.1, robot_pub);
+            else 
+                [velocity_msg] = generate_msgs(0, -0.1, robot_pub);
+            end
+            tic;
+            while toc < angle_time
+                send_msgs(velocity_msg, robot_pub);
+                disp("Turning to face the polar......");
+            end
             stop_mission(robot_pub);
         end      
         [velocity_msg] = stop_mission(robot_pub);
