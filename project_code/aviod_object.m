@@ -9,5 +9,5 @@ function [velocity_msg, minDist] = aviod_object(x_lidar, y_lidar, robot_pub)
     velocity_msg = rosmessage(robot_pub);
     % Command robot action
     velocity_msg.Angular.Z = 0;
-    velocity_msg.Linear.X = -0.02;
+    velocity_msg.Linear.X = 0;
 end

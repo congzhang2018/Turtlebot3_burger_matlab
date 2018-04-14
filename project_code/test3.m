@@ -40,7 +40,7 @@ while(1)
         [velocity_msg] = generate_msgs(0, 0.5, robot_pub);
         send_msgs(velocity_msg, robot_pub);
         tic;
-        while toc < 2
+        while toc < 2.2
             disp("Turning 60 degrees......");
         end
         disp("End Turning!!");
@@ -87,10 +87,10 @@ while(1)
                 disp("in state 3 :lost line return to searching....")
             else
                 cost_time = distance_line/0.5; %calculate time
-                [velocity_msg]= generate_msgs(0.1, 0, robot_pub);
+                [velocity_msg]= generate_msgs(0.5, 0, robot_pub);
                 send_msgs(velocity_msg, robot_pub);
                 tic;
-                while toc < 2
+                while toc < cost_time
                     disp("in state 3: Go to target >>>>>>>");
                 end
                 stop_mission(robot_pub);
@@ -101,9 +101,9 @@ while(1)
                 disp(desired_yaw)
                 angle_time = abs(desired_yaw)/0.5;
                 if desired_yaw > 0
-                    [velocity_msg] = generate_msgs(0, 0.3, robot_pub);
+                    [velocity_msg] = generate_msgs(0, 0.5, robot_pub);
                 else 
-                    [velocity_msg] = generate_msgs(0, -0.3, robot_pub);
+                    [velocity_msg] = generate_msgs(0, -0.5, robot_pub);
                 end
                 send_msgs(velocity_msg, robot_pub);
                 tic;
@@ -125,14 +125,12 @@ while(1)
                 disp("in state 4 :lost target... return to searching ....");
                 states = 3;
             else
-                [x_lidar, y_lidar, scan_data] = get_lidar_data(laser_sub);       
-                [velocity_msg, minDist] = aviod_object(x_lidar, y_lidar, robot_pub);
-                if minDist < 0.5
+                if distance_polar < 0.5
                     stop_mission(robot_pub);
                     disp("Arrival position!!");
                 else
-                    cost_time = 5;
-                    [velocity_msg] = generate_msgs(0.1, 0, robot_pub);
+                    cost_time = distance_polar/0.5;
+                    [velocity_msg] = generate_msgs(0.5, 0, robot_pub);
                     send_msgs(velocity_msg, robot_pub);
                     tic;
                     while toc < cost_time
@@ -141,12 +139,14 @@ while(1)
                     stop_mission(robot_pub);
                     [distance_polar, angle_polar, distance_line, angle_line]= get_cam_data(cam_sub);
                     disp(angle_polar);
+                    pause(5);
                     cost_angle_time = angle_polar/0.5;
-                    if angle_polar > 0
-                        [velocity_msg] = generate_msgs(0, -0.2, robot_pub);
+                    if desired_yaw > 0
+                        [velocity_msg] = generate_msgs(0, 0.5, robot_pub);
                     else 
-                        [velocity_msg] = generate_msgs(0, 0.2, robot_pub);
+                        [velocity_msg] = generate_msgs(0, -0.5, robot_pub);
                     end
+                    pause(5);
                     disp(angle_time);
                     send_msgs(velocity_msg, robot_pub);
                     
@@ -158,13 +158,7 @@ while(1)
                 end
             end
         else
-            cost_time = 2;
-            [velocity_msg] = generate_msgs(0.1, 0, robot_pub);
-            send_msgs(velocity_msg, robot_pub);
-            tic;
-            while toc < cost_time
-                disp("Moving to the yellow polar ... ");
-            end
+            Goto([])
             stop_mission(robot_pub);
 %             cost_angle_time = angle_line/0.1;
 %             if desired_yaw > 0
