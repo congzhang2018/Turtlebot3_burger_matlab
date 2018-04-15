@@ -8,7 +8,7 @@ function [finsih_go_to_line]= Gotoline(distance, robot_pub)
         disp("in state 3: Go to target >>>>>>>");
     end
     stop_mission(robot_pub);
-    finsih_go_to_line = Ture;
+    finsih_go_to_line = true;
     
     [velocity_msg]= generate_msgs(0, 0.2, robot_pub);
     send_msgs(velocity_msg, robot_pub);

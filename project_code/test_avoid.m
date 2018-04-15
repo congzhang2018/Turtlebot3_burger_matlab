@@ -1,4 +1,4 @@
-function states = around_object2(laser_sub, robot_pub) 
+while(1)
     angle_speed = 0.3;
     wait_time = 3;
     [x_lidar, y_lidar, scan_data] = get_lidar_data(laser_sub);
@@ -47,5 +47,8 @@ function states = around_object2(laser_sub, robot_pub)
             stop_mission(robot_pub);
             states = 2;
         end
-    end
+ else
+        [velocity_msg]= generate_msgs(0.1, 0, robot_pub);
+        send_msgs(velocity_msg, robot_pub);
+  end
 end
