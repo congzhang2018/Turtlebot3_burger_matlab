@@ -1,11 +1,13 @@
-function [velocity_msg, minDist] = aviod_object(x_lidar, y_lidar, robot_pub)
-    dist = [];
-    for i = 1:length(x_lidar)
-        if x_lidar(i) > 0
-            dist = [dist, sqrt(x_lidar(i)^2 + y_lidar(i)^2)];
-        end
-    end
-    minDist = min(dist);
+function [velocity_msg, minDist] = aviod_object(scan_data, robot_pub)
+    
+    dist1 = scan_data.Ranges(1:30);
+    dist2 = scan_data.Ranges(330:360);
+    dist1(dist1 == 0)=[];
+    dist2(dist2 == 0)=[]; 
+    minDist1 = min(dist1); 
+    minDist2 = min(dist2);
+    minDist = min(minDist1, minDist2);
+    
     velocity_msg = rosmessage(robot_pub);
     % Command robot action
     velocity_msg.Angular.Z = 0;
