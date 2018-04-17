@@ -6,6 +6,12 @@ function [velocity_msg, minDist] = aviod_object(scan_data, robot_pub)
     dist2(dist2 == 0)=[]; 
     minDist1 = min(dist1); 
     minDist2 = min(dist2);
+    if sum(minDist2) == 0
+        minDist2 = 99;
+    end
+    if sum(minDist1) == 0
+        minDist1 = 99;
+    end
     minDist = min(minDist1, minDist2);
     
     velocity_msg = rosmessage(robot_pub);

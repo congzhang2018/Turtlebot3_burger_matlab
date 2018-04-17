@@ -1,9 +1,9 @@
 function Flag = around_object2(laser_sub, robot_pub) 
-    angle_speed = 0.3;
-    wait_time = 3;
+    angle_speed = 0.2;
+    wait_time = 7;
     [x_lidar, y_lidar, scan_data] = get_lidar_data(laser_sub);
-    dist1 = scan_data.Ranges(1:30);
-    dist2 = scan_data.Ranges(330:360);
+    dist1 = scan_data.Ranges(1:35);
+    dist2 = scan_data.Ranges(325:360);
     dist1(dist1 == 0)=[];
     dist2(dist2 == 0)=[]; 
     minDist1 = min(dist1); 
@@ -25,11 +25,11 @@ function Flag = around_object2(laser_sub, robot_pub)
             send_msgs(velocity_msg, robot_pub);
             disp("Turn right....");
             tic;
-            while toc < wait_time
+            while toc < 2.5
 %                 send_msgs(velocity_msg, robot_pub);
                 
             end
-            [velocity_msg]= generate_msgs(0, angle_speed + 0.1, robot_pub);
+            [velocity_msg]= generate_msgs(0, angle_speed, robot_pub);
             send_msgs(velocity_msg, robot_pub);
             disp("Turn back ......");
             tic;
@@ -53,10 +53,10 @@ function Flag = around_object2(laser_sub, robot_pub)
             send_msgs(velocity_msg, robot_pub);
             disp("Turn right....");
             tic;
-            while toc < wait_time
+            while toc < 2.5
 %                 send_msgs(velocity_msg, robot_pub);       
             end
-            [velocity_msg]= generate_msgs(0, -angle_speed + 0.1, robot_pub);
+            [velocity_msg]= generate_msgs(0, -angle_speed, robot_pub);
             send_msgs(velocity_msg, robot_pub);
             disp("Turn back ......");
             tic;

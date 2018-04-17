@@ -24,7 +24,7 @@ angle_speed = 0.3;
             [velocity_msg]= generate_msgs(0.1,0, robot_pub);
             send_msgs(velocity_msg, robot_pub);
             tic;
-            while toc < wait_time
+            while toc < 2
 %                 send_msgs(velocity_msg, robot_pub);
                 disp("Turn right....");
             end

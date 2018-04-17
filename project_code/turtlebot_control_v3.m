@@ -115,10 +115,7 @@ while(1)
                 end
                 [robot_Rotation] = get_imu_data(imu_sub);
                 current_yaw = robot_Rotation(1);
-                desired_yaw = angle_line;
-%                 desired_yaw = angle_pillar;
-                disp(desired_yaw);
-                if desired_yaw > 0
+                if angle_line > 0
                     [velocity_msg] = generate_msgs(0, -0.1, robot_pub);
                 else 
                     [velocity_msg] = generate_msgs(0, 0.1, robot_pub);
@@ -128,9 +125,6 @@ while(1)
                 tic;
                 while toc < 1
                 end 
-                  
-                info = [angle_line, current_yaw, desired_yaw];
-                disp(info);
                 
                 stop_mission(robot_pub);
                 Flag = around_object2(laser_sub, robot_pub);
@@ -156,12 +150,12 @@ while(1)
                 [x_lidar, y_lidar, scan_data] = get_lidar_data(laser_sub);       
                 [velocity_msg, minDist] = aviod_object(scan_data, robot_pub);
                 
-                if minDist < 0.5
+                if (minDist < 0.7) && (distance_pillar < 3)
                     stop_mission(robot_pub);
                     disp(minDist);
                     disp("Arrival position!!");
+                    break;
                 else
-                    
                     cost_time = 3;
                     [velocity_msg] = generate_msgs(0.1, 0, robot_pub);
                     send_msgs(velocity_msg, robot_pub);
@@ -169,7 +163,7 @@ while(1)
                     tic;
                     while toc < cost_time
                     end
-                    stop_mission(robot_pub);
+%                     stop_mission(robot_pub);
                     Flag = around_object2(laser_sub, robot_pub);
                     if Flag 
 %                             disp("no object in the forward");
@@ -178,7 +172,7 @@ while(1)
                     end
                     [distance_pillar, angle_pillar, distance_line, angle_line, angle]= get_cam_data(cam_sub);
                     disp(angle_pillar);
-                    cost_angle_time = angle_pillar/0.5;
+                    cost_angle_time = angle_pillar/0.3;
                     if angle_pillar > 0
                         [velocity_msg] = generate_msgs(0, -0.2, robot_pub);
                     else 
@@ -199,12 +193,12 @@ while(1)
                 end
             end
         else
-            cost_time = 2;
+            cost_time1 = 2;
             [velocity_msg] = generate_msgs(0.1, 0, robot_pub);
             send_msgs(velocity_msg, robot_pub);
             disp("Following line ... ");
             tic;
-            while toc < cost_time
+            while toc < cost_time1
             end
             stop_mission(robot_pub);
             Flag = around_object2(laser_sub, robot_pub);
@@ -213,10 +207,14 @@ while(1)
             else
                 states = 2;
             end
-            if angle_line > 0
-                [velocity_msg] = generate_msgs(0, -0.1, robot_pub);
-            else 
-                [velocity_msg] = generate_msgs(0, 0.1, robot_pub);
+            if abs(angle_line) < 0.1
+                [velocity_msg] = generate_msgs(0.1, 0, robot_pub);
+            else
+                if angle_line > 0
+                    [velocity_msg] = generate_msgs(0, -0.1, robot_pub);
+                else 
+                    [velocity_msg] = generate_msgs(0, 0.1, robot_pub);
+                end
             end
             send_msgs(velocity_msg, robot_pub);
             disp("in state 4: Turning to face the polar......");
