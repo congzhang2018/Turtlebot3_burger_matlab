@@ -5,19 +5,9 @@ function [finsih_go_to_line]= Gotoline(distance,angle, robot_pub)
     send_msgs(velocity_msg, robot_pub);
     disp("in Go to line: Go to target >>>>>>>");
     tic;
-    while toc < cost_time
-        
+    while toc < cost_time   
     end
     stop_mission(robot_pub);
-    
-    
-%     [velocity_msg]= generate_msgs(0, 0.2, robot_pub);
-%     send_msgs(velocity_msg, robot_pub);
-%     disp("in Go to line: turn 90 degree ......");
-%     tic;
-%     while toc < 7
-%         
-%     end
     time_cost = abs(angle)/0.3;
     if angle > 0
         [velocity_msg]= generate_msgs(0, -0.2, robot_pub);
@@ -25,7 +15,7 @@ function [finsih_go_to_line]= Gotoline(distance,angle, robot_pub)
         [velocity_msg]= generate_msgs(0, 0.2, robot_pub);
     end
     send_msgs(velocity_msg, robot_pub);
-    disp("in Go to line: turn 90 degree ......");
+    disp("in Go to line: turning to face the pillar");
     tic;
     while toc < time_cost
     end
