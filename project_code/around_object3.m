@@ -33,7 +33,7 @@ function Flag = around_object2(laser_sub, robot_pub)
             send_msgs(velocity_msg, robot_pub);
             disp("Turn back ......");
             tic;
-            while toc < wait_time
+            while toc < wait_time+1
 %             send_msgs(velocity_msg, robot_pub);
             
             end
@@ -60,7 +60,7 @@ function Flag = around_object2(laser_sub, robot_pub)
             send_msgs(velocity_msg, robot_pub);
             disp("Turn back ......");
             tic;
-            while toc < wait_time
+            while toc < wait_time+1
 %             send_msgs(velocity_msg, robot_pub);
             end
             stop_mission(robot_pub);

@@ -106,7 +106,7 @@ while(1)
                     while toc < cost_time
                     end
                     stop_mission(robot_pub);
-                    Flag = around_object2(laser_sub, robot_pub);
+                    Flag = around_object3(laser_sub, robot_pub);
                     if Flag 
 %                             disp("no object in the forward");
                     else
@@ -150,7 +150,7 @@ while(1)
                 [x_lidar, y_lidar, scan_data] = get_lidar_data(laser_sub);       
                 [velocity_msg, minDist] = aviod_object(scan_data, robot_pub);
                 
-                if (minDist < 0.7) && (distance_pillar < 4)
+                if (minDist < 0.7) && (distance_pillar < 3)
                     stop_mission(robot_pub);
                     disp(minDist);
                     disp("Arrival position!!");
@@ -201,7 +201,7 @@ while(1)
             while toc < cost_time1
             end
             stop_mission(robot_pub);
-            Flag = around_object2(laser_sub, robot_pub);
+            Flag = around_object3(laser_sub, robot_pub);
             if Flag 
 %                             disp("no object in the forward");
             else
