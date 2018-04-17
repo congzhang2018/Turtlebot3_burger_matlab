@@ -194,6 +194,12 @@ while(1)
             end
         else
             cost_time1 = 2;
+            Flag = around_object3(laser_sub, robot_pub);
+            if Flag 
+%                             disp("no object in the forward");
+            else
+                states = 2;
+            end
             [velocity_msg] = generate_msgs(0.1, 0, robot_pub);
             send_msgs(velocity_msg, robot_pub);
             disp("Following line ... ");
@@ -201,12 +207,6 @@ while(1)
             while toc < cost_time1
             end
             stop_mission(robot_pub);
-            Flag = around_object3(laser_sub, robot_pub);
-            if Flag 
-%                             disp("no object in the forward");
-            else
-                states = 2;
-            end
             if abs(angle_line) < 0.1
                 [velocity_msg] = generate_msgs(0.1, 0, robot_pub);
             else

@@ -21,7 +21,7 @@ function Flag = around_object2(laser_sub, robot_pub)
 %                 send_msgs(velocity_msg, robot_pub);
                 
             end
-            [velocity_msg]= generate_msgs(0.2, 0, robot_pub);
+            [velocity_msg]= generate_msgs(0.1, 0, robot_pub);
             send_msgs(velocity_msg, robot_pub);
             disp("Turn right....");
             tic;
@@ -49,7 +49,7 @@ function Flag = around_object2(laser_sub, robot_pub)
 %                 send_msgs(velocity_msg, robot_pub);
                 
             end
-            [velocity_msg]= generate_msgs(0.2,0, robot_pub);
+            [velocity_msg]= generate_msgs(0.1,0, robot_pub);
             send_msgs(velocity_msg, robot_pub);
             disp("Turn right....");
             tic;

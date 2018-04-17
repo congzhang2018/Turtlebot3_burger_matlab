@@ -26,14 +26,47 @@ function Flag = around_object2(laser_sub, robot_pub)
             disp("Turn right....");
             tic;
             while toc < 2.5
-%                 send_msgs(velocity_msg, robot_pub);
-                
+%                 send_msgs(velocity_msg, robot_pub);    
             end
             [velocity_msg]= generate_msgs(0, angle_speed, robot_pub);
             send_msgs(velocity_msg, robot_pub);
             disp("Turn back ......");
             tic;
-            while toc < wait_time+1
+            while toc < wait_time
+%             send_msgs(velocity_msg, robot_pub);
+            
+            end
+            stop_mission(robot_pub);
+            Flag = false;
+            
+            [velocity_msg]= generate_msgs(0.1, 0, robot_pub);
+            send_msgs(velocity_msg, robot_pub);
+            disp("Turn right....");
+            tic;
+            while toc < 2
+%                 send_msgs(velocity_msg, robot_pub);    
+            end
+            
+            [velocity_msg]= generate_msgs(0, angle_speed, robot_pub);
+            send_msgs(velocity_msg, robot_pub);
+            disp("Turn right....");
+            tic;
+            while toc < wait_time
+%                 send_msgs(velocity_msg, robot_pub);
+                
+            end
+            [velocity_msg]= generate_msgs(0.2, 0, robot_pub);
+            send_msgs(velocity_msg, robot_pub);
+            disp("Turn right....");
+            tic;
+            while toc < 2.5
+%                 send_msgs(velocity_msg, robot_pub);    
+            end
+            [velocity_msg]= generate_msgs(0, -angle_speed, robot_pub);
+            send_msgs(velocity_msg, robot_pub);
+            disp("Turn back ......");
+            tic;
+            while toc < wait_time
 %             send_msgs(velocity_msg, robot_pub);
             
             end
@@ -60,11 +93,38 @@ function Flag = around_object2(laser_sub, robot_pub)
             send_msgs(velocity_msg, robot_pub);
             disp("Turn back ......");
             tic;
-            while toc < wait_time+1
+            while toc < wait_time
 %             send_msgs(velocity_msg, robot_pub);
             end
             stop_mission(robot_pub);
+            [velocity_msg]= generate_msgs(0.1 ,0, robot_pub);
+            send_msgs(velocity_msg, robot_pub);
+            disp("Turn right....");
+            tic;
+            while toc < 2
+%                 send_msgs(velocity_msg, robot_pub);       
+            end
+            
             Flag = false;
+                        stop_mission(robot_pub);
+            [velocity_msg]= generate_msgs(0, -angle_speed, robot_pub);
+            send_msgs(velocity_msg, robot_pub);
+            disp("Turn right....");
+            tic;
+            while toc < wait_time
+%                 send_msgs(velocity_msg, robot_pub);
+                
+            end
+            [velocity_msg]= generate_msgs(0.2,0, robot_pub);
+            send_msgs(velocity_msg, robot_pub);
+            disp("Turn right....");
+            tic;
+            while toc < 2.5
+%                 send_msgs(velocity_msg, robot_pub);       
+            end
+            [velocity_msg]= generate_msgs(0, angle_speed, robot_pub);
+            send_msgs(velocity_msg, robot_pub);
+            disp("Turn back ......");
         end
     else
         Flag = true;
